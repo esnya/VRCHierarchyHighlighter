@@ -1,5 +1,5 @@
 /*  ヒエラルキを階層別に色分けするのと、VRC向けの重要コンポーネントがある場合にアイコンで可視化するやつ
- * 
+ *
  *  see also: http://baba-s.hatenablog.com/entry/2015/05/09/122713
  */
 
@@ -66,6 +66,11 @@ public static class HierarchyIndentHelper
 
     private static IEnumerable<Transform> dynamic_bone_roots_ = new List<Transform>();
 
+    private static string FindResource(string name, string type)
+    {
+        return AssetDatabase.FindAssets($"t:{type} {name}").Select(AssetDatabase.GUIDToAssetPath).Where(path => path.Contains("/VRCHierarchyHighlighter/Editor/Resources/")).First();
+    }
+
     private static Texture2D LoadIconTex2DFromPNG(string path)
     {
         BinaryReader reader = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read));
@@ -81,7 +86,7 @@ public static class HierarchyIndentHelper
         {
             Texture2D icon = nameAndType.Value != null
                 ? EditorGUIUtility.ObjectContent(null, nameAndType.Value).image as Texture2D
-                : LoadIconTex2DFromPNG(kResourceDirPath + nameAndType.Key + kResourceSuffix);
+                : LoadIconTex2DFromPNG(FindResource(nameAndType.Key, "Texture2D"));
             icon_resources_.Remove(nameAndType.Key);
             icon_resources_.Add(nameAndType.Key, icon);
         }
