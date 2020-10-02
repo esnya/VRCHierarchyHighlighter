@@ -231,7 +231,7 @@ public static class HierarchyIndentHelper
         target_rect.height = kIconSize;
 
         var mesh = ((SkinnedMeshRenderer)component).sharedMesh;
-        GUI.Label(target_rect, string.Format("Vers: {0}", mesh.vertexCount));
+        GUI.Label(target_rect, string.Format("Vers: {0}", mesh?.vertexCount));
     }
 }
 
